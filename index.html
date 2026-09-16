@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>UPI Fee Check</title>
-  <meta name="description" content="Will UPI cost you money from 15 Oct 2026? Upload your UPI history and find out, then see the facts behind the new merchant fee." />
+  <meta name="description" content="Will UPI cost you money from 15 Oct 2026? Upload your UPI history and find out, then see the facts behind the new UPI fee." />
   <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
   <meta name="theme-color" content="#3a86ff" />
   <meta property="og:type" content="website" />
@@ -29,7 +29,7 @@
   <!-- ============ VIEW 1: HOW MUCH I HAVE TO PAY ============ -->
   <main id="view-pay" class="view" data-view="pay">
     <section class="pay-hero wrap">
-      <p class="eyebrow">New UPI merchant fee · from 15 Oct 2026</p>
+      <p class="eyebrow">New UPI fee · from 15 Oct 2026</p>
       <h1>Upload your UPI history.<br />See what it costs <span class="blue">you</span>.</h1>
       <p class="lede">Drop in bank statements (PDF) or screenshots from GPay, PhonePe or Paytm. We read them on your device, sort each payment, and apply NPCI's new fee rules.</p>
 
@@ -62,20 +62,20 @@
 
     <section class="results wrap" id="results" hidden>
       <div class="verdict">
-        <p class="eyebrow">Your charge per UPI payment</p>
+        <p class="eyebrow">Your estimated UPI fees</p>
         <p class="verdict-num"><span class="count" id="you-pay">₹0</span></p>
-        <p class="verdict-sub">UPI stays <strong>free for people who pay</strong>. The new fee is paid by merchants, and they're <strong>not allowed to add it to your bill</strong>.</p>
+        <p class="verdict-sub">The new fee on these payments from 15 Oct 2026. It's charged on <strong>payments to shops above ₹2,000</strong>, and costs like this end up in <strong>the prices you pay</strong>.</p>
       </div>
 
       <div class="stats">
         <div class="stat"><span class="stat-num" id="s-count">0</span><span class="stat-label">UPI payments found</span></div>
-        <div class="stat"><span class="stat-num" id="s-p2p">0</span><span class="stat-label">to people · always free</span></div>
-        <div class="stat"><span class="stat-num" id="s-feeable">0</span><span class="stat-label">to merchants above ₹2,000</span></div>
-        <div class="stat stat-blue"><span class="stat-num" id="s-merchant">₹0</span><span class="stat-label">merchants would pay, at most</span></div>
+        <div class="stat"><span class="stat-num" id="s-p2p">0</span><span class="stat-label">to people · no fee</span></div>
+        <div class="stat"><span class="stat-num" id="s-feeable">0</span><span class="stat-label">payments with a fee</span></div>
+        <div class="stat stat-blue"><span class="stat-num" id="s-rate">0%</span><span class="stat-label">of what you spent at shops goes to fees</span></div>
       </div>
 
       <div class="breakdown">
-        <h3>Where the merchant fee would land</h3>
+        <h3>Where your fees come from</h3>
         <div class="stack" id="stack"></div>
         <ul class="stack-legend" id="stack-legend"></ul>
       </div>
@@ -86,14 +86,14 @@
         <h3>Every payment we found</h3>
         <div class="filters" role="tablist">
           <button class="chip is-on" data-filter="all" type="button">All</button>
-          <button class="chip" data-filter="fee" type="button">Has merchant fee</button>
+          <button class="chip" data-filter="fee" type="button">Has a fee</button>
           <button class="chip" data-filter="check" type="button">Needs a look</button>
         </div>
       </div>
       <p class="hint">Something off? Edit the amount, type or category and the totals update.</p>
       <div class="table-wrap">
         <table class="tx-table">
-          <thead><tr><th>Date</th><th>Paid to / from</th><th class="num">Amount</th><th>Type</th><th>Category</th><th class="num">You pay</th><th class="num">Merchant pays</th></tr></thead>
+          <thead><tr><th>Date</th><th>Paid to / from</th><th class="num">Amount</th><th>Type</th><th>Category</th><th class="num">Fee</th></tr></thead>
           <tbody id="tx-body"></tbody>
         </table>
       </div>
@@ -101,9 +101,8 @@
       <div class="fineprint">
         <h3>Good to know</h3>
         <ul>
-          <li><strong>The merchant total is an upper limit.</strong> Small vendors receiving under ₹1 lakh a month through UPI pay nothing at all, and we can't tell who they are from your statement.</li>
+          <li><strong>This total is an upper limit.</strong> Payments to small vendors receiving under ₹1 lakh a month have no fee, and we can't tell who they are from your statement.</li>
           <li><strong>Paying with a credit card on UPI?</strong> Those payments follow separate credit card rules and aren't covered here.</li>
-          <li><strong>Asked to pay a "UPI charge" at a shop?</strong> Merchants can't pass this fee on to you (NPCI FAQ Q34).</li>
           <li>Education fees: NPCI says "flat-fee or capped" without a number, so we assume ₹5.</li>
         </ul>
         <button class="btn" id="reset-btn" type="button">Check another file</button>

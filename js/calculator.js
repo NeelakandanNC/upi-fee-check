@@ -122,7 +122,9 @@ function render() {
   countTo($('#s-count'), withFee.length);
   countTo($('#s-p2p'), p2p.length);
   countTo($('#s-feeable'), feeable.length);
-  countTo($('#s-merchant'), total, { format: formatINR });
+  const spent = debits.filter((t) => t.kind === 'p2m').reduce((s, t) => s + t.amount, 0);
+  countTo($('#you-pay'), total, { format: formatINR });
+  countTo($('#s-rate'), spent ? (total / spent) * 100 : 0, { format: (n) => n.toFixed(2) + '%' });
 
   // Breakdown by category.
   const byCat = {};
@@ -130,7 +132,7 @@ function render() {
   const cats = Object.entries(byCat).sort((a, b) => b[1] - a[1]);
   $('#stack').innerHTML = cats.length
     ? cats.map(([c, v], i) => `<span style="width:${(v / total) * 100}%;animation-delay:${i * 80}ms" title="${CATEGORIES[c].label}: ${formatINR(v)}"></span>`).join('')
-    : '<span class="stack-empty">No merchant fees in these payments</span>';
+    : '<span class="stack-empty">No fees on these payments</span>';
   $('#stack-legend').innerHTML = cats
     .map(([c, v]) => `<li><i></i>${CATEGORIES[c].label} · <strong>${formatINR(v)}</strong> <span class="zero">(${CATEGORIES[c].rule})</span></li>`)
     .join('');
@@ -159,11 +161,10 @@ function render() {
           <td class="num"><label class="amt">${t.kind === 'received' ? '+' : ''}₹<input data-field="amount" type="number" min="0" step="0.01" inputmode="decimal" value="${t.amount}" aria-label="Amount" /></label></td>
           <td><select data-field="kind" aria-label="Type">${Object.entries(KINDS).map(([k, l]) => option(k, l, t.kind)).join('')}</select></td>
           <td><select data-field="category" aria-label="Category"${catDisabled}>${Object.entries(CATEGORIES).map(([k, c]) => option(k, c.label, t.category)).join('')}</select></td>
-          <td class="num zero">₹0</td>
           <td class="num fee ${t.fee ? '' : 'zero'}">${formatINR(t.fee)}</td>
         </tr>`;
       }).join('')
-    : `<tr><td colspan="7" class="zero" style="text-align:center;padding:28px">Nothing here.</td></tr>`;
+    : `<tr><td colspan="6" class="zero" style="text-align:center;padding:28px">Nothing here.</td></tr>`;
 }
 
 function setFilter(f) {

@@ -2,7 +2,7 @@
 
 A static site that answers two questions about the UPI merchant fee (MDR) that starts on **15 Oct 2026**:
 
-1. **How much I have to pay in charges.** Upload bank statement PDFs or UPI app screenshots. Every payment is read and classified in the browser, then the NPCI rules are applied. People who pay always pay ₹0; the page also shows what merchants would pay.
+1. **How much I have to pay in charges.** Upload bank statement PDFs or UPI app screenshots. Every payment is read and classified in the browser, then the NPCI rules are applied to estimate the UPI fees on your payments.
 2. **Should I worry?** A scroll-animated infographic built from official sources.
 
 ## Run locally
