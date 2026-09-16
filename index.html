@@ -37,6 +37,7 @@
       <p class="eyebrow">New UPI fee · from 15 Oct 2026</p>
       <h1>Upload your UPI history.<br />See what it costs <span class="blue">you</span>.</h1>
       <p class="lede">Drop in bank statements (PDF) or screenshots from GPay, PhonePe or Paytm. We read them on your device, sort each payment, and apply NPCI's new fee rules.</p>
+      <p class="sort-note"><strong>How we sort payments.</strong> We read clues in each payment's description, like UPI IDs (paytmqr, Razorpay), business words (LTD, STORE) and brand names. Unclear ones are treated as people. We can't tell small shops from big ones, so fees may be overestimated.</p>
 
       <label class="dropzone" id="dropzone" tabindex="0">
         <input id="file-input" type="file" accept="application/pdf,image/*" multiple hidden />
@@ -50,7 +51,7 @@
       <div class="hero-actions">
         <button class="btn-ghost" id="sample-btn" type="button">No file handy? Try a sample statement</button>
         <details class="privacy">
-          <summary><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M12 2 4 5v6c0 5 3.4 9.4 8 11 4.6-1.6 8-6 8-11V5l-8-3Z" fill="none" stroke="currentColor" stroke-width="2"/></svg> Your files never leave this device <span class="chev" aria-hidden="true">▾</span></summary>
+          <summary><svg viewBox="0 0 24 24" width="19" height="19" aria-hidden="true"><path d="M12 2 4 5v6c0 5 3.4 9.4 8 11 4.6-1.6 8-6 8-11V5l-8-3Z" fill="none" stroke="currentColor" stroke-width="2"/></svg> Your files never leave this device <span class="chev" aria-hidden="true">▾</span></summary>
           <ol>
             <li><strong>The technical reason:</strong> everything runs inside your browser. PDFs are read with pdf.js and screenshots with Tesseract.js, both of which run on your device. There is no server receiving your files, so nothing is uploaded, saved or shared. Close the tab and it's gone.</li>
             <li><strong>The second reason:</strong> I can't pay to store all the data.</li>
@@ -106,7 +107,6 @@
       <div class="fineprint">
         <h3>Good to know</h3>
         <ul>
-          <li><strong>How we sort payments.</strong> We read clues in each payment's description, like UPI IDs (paytmqr, Razorpay), business words (LTD, STORE) and brand names. Unclear ones are treated as people. We can't tell small shops from big ones, so fees may be overestimated.</li>
           <li><strong>This total is an upper limit.</strong> Payments to small vendors receiving under ₹1 lakh a month have no fee, and we can't tell who they are from your statement.</li>
           <li><strong>Paying with a credit card on UPI?</strong> Those payments follow separate credit card rules and aren't covered here.</li>
           <li>Education fees: NPCI says "flat-fee or capped" without a number, so we assume ₹5.</li>
