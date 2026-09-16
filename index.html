@@ -1,0 +1,314 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>UPI Fee Check</title>
+  <meta name="description" content="Will UPI cost you money from 15 Oct 2026? Upload your UPI history and find out, then see the facts behind the new merchant fee." />
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <meta name="theme-color" content="#3a86ff" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="UPI Fee Check" />
+  <meta property="og:description" content="Will the new UPI fee (from 15 Oct 2026) affect you? Upload your UPI history and see, then get the facts from NPCI, RBI and PIB." />
+  <meta property="og:image" content="/og.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:creator" content="@NeelakandanNC" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <noscript><p style="padding:16px;text-align:center">This site needs JavaScript to read your files and run the charts.</p></noscript>
+  <header class="topbar">
+    <a class="brand" href="#pay"><span class="brand-mark">₹</span> UPI Fee Check</a>
+    <span class="topbar-note">Rules effective 15 Oct 2026</span>
+  </header>
+
+  <!-- ============ VIEW 1: HOW MUCH I HAVE TO PAY ============ -->
+  <main id="view-pay" class="view" data-view="pay">
+    <section class="pay-hero wrap">
+      <p class="eyebrow">New UPI merchant fee · from 15 Oct 2026</p>
+      <h1>Upload your UPI history.<br />See what it costs <span class="blue">you</span>.</h1>
+      <p class="lede">Drop in bank statements (PDF) or screenshots from GPay, PhonePe or Paytm. We read them on your device, sort each payment, and apply NPCI's new fee rules.</p>
+
+      <label class="dropzone" id="dropzone" tabindex="0">
+        <input id="file-input" type="file" accept="application/pdf,image/*" multiple hidden />
+        <span class="dz-icon" aria-hidden="true">
+          <svg viewBox="0 0 48 48" width="44" height="44"><path d="M24 32V10m0 0-8 8m8-8 8 8" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><path d="M8 30v6a4 4 0 0 0 4 4h24a4 4 0 0 0 4-4v-6" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg>
+        </span>
+        <span class="dz-title">Drop PDFs or screenshots here</span>
+        <span class="dz-sub">or <u>browse files</u> · PDF, PNG, JPG · password-protected PDFs work</span>
+      </label>
+
+      <div class="hero-actions">
+        <button class="btn-ghost" id="sample-btn" type="button">No file handy? Try a sample statement</button>
+        <details class="privacy">
+          <summary><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M12 2 4 5v6c0 5 3.4 9.4 8 11 4.6-1.6 8-6 8-11V5l-8-3Z" fill="none" stroke="currentColor" stroke-width="2"/></svg> Your files never leave this device <span class="chev" aria-hidden="true">▾</span></summary>
+          <ol>
+            <li><strong>The technical reason:</strong> everything runs inside your browser. PDFs are read with pdf.js and screenshots with Tesseract.js, both of which run on your device. There is no server receiving your files, so nothing is uploaded, saved or shared. Close the tab and it's gone.</li>
+            <li><strong>The second reason:</strong> I can't pay to store all the data.</li>
+          </ol>
+        </details>
+      </div>
+
+      <div class="progress" id="progress" hidden>
+        <div class="progress-bar"><span></span></div>
+        <p id="progress-text">Getting ready…</p>
+      </div>
+      <p class="error" id="error" hidden></p>
+    </section>
+
+    <section class="results wrap" id="results" hidden>
+      <div class="verdict">
+        <p class="eyebrow">Your charge per UPI payment</p>
+        <p class="verdict-num"><span class="count" id="you-pay">₹0</span></p>
+        <p class="verdict-sub">UPI stays <strong>free for people who pay</strong>. The new fee is paid by merchants, and they're <strong>not allowed to add it to your bill</strong>.</p>
+      </div>
+
+      <div class="stats">
+        <div class="stat"><span class="stat-num" id="s-count">0</span><span class="stat-label">UPI payments found</span></div>
+        <div class="stat"><span class="stat-num" id="s-p2p">0</span><span class="stat-label">to people · always free</span></div>
+        <div class="stat"><span class="stat-num" id="s-feeable">0</span><span class="stat-label">to merchants above ₹2,000</span></div>
+        <div class="stat stat-blue"><span class="stat-num" id="s-merchant">₹0</span><span class="stat-label">merchants would pay, at most</span></div>
+      </div>
+
+      <div class="breakdown">
+        <h3>Where the merchant fee would land</h3>
+        <div class="stack" id="stack"></div>
+        <ul class="stack-legend" id="stack-legend"></ul>
+      </div>
+
+      <div class="review-banner" id="review-banner" hidden></div>
+
+      <div class="table-head">
+        <h3>Every payment we found</h3>
+        <div class="filters" role="tablist">
+          <button class="chip is-on" data-filter="all" type="button">All</button>
+          <button class="chip" data-filter="fee" type="button">Has merchant fee</button>
+          <button class="chip" data-filter="check" type="button">Needs a look</button>
+        </div>
+      </div>
+      <p class="hint">Something off? Edit the amount, type or category and the totals update.</p>
+      <div class="table-wrap">
+        <table class="tx-table">
+          <thead><tr><th>Date</th><th>Paid to / from</th><th class="num">Amount</th><th>Type</th><th>Category</th><th class="num">You pay</th><th class="num">Merchant pays</th></tr></thead>
+          <tbody id="tx-body"></tbody>
+        </table>
+      </div>
+
+      <div class="fineprint">
+        <h3>Good to know</h3>
+        <ul>
+          <li><strong>The merchant total is an upper limit.</strong> Small vendors receiving under ₹1 lakh a month through UPI pay nothing at all, and we can't tell who they are from your statement.</li>
+          <li><strong>Paying with a credit card on UPI?</strong> Those payments follow separate credit card rules and aren't covered here.</li>
+          <li><strong>Asked to pay a "UPI charge" at a shop?</strong> Merchants can't pass this fee on to you (NPCI FAQ Q34).</li>
+          <li>Education fees: NPCI says "flat-fee or capped" without a number, so we assume ₹5.</li>
+        </ul>
+        <button class="btn" id="reset-btn" type="button">Check another file</button>
+      </div>
+    </section>
+  </main>
+
+  <!-- ============ VIEW 2: SHOULD I WORRY? ============ -->
+  <main id="view-worry" class="view" data-view="worry" hidden>
+
+    <section class="w-hero">
+      <p class="eyebrow">The UPI fee, explained with official data</p>
+      <h1 class="w-question">Should I worry?</h1>
+      <p class="w-answer" aria-label="No.">
+        <span>N</span><span>o</span><span class="blue">.</span>
+      </p>
+      <p class="w-hero-sub">Most UPI payments carry no fee at all. Scroll to see why.</p>
+      <div class="scroll-cue" aria-hidden="true"><span></span></div>
+    </section>
+
+    <section class="w-scale wrap">
+      <p class="eyebrow">August 2026, in one month</p>
+      <div class="scale-grid">
+        <div><span class="big-num" data-count="2451">0</span><span class="big-unit">crore</span><p>UPI transactions</p></div>
+        <div><span class="big-num" data-prefix="₹" data-count="29.9" data-decimals="1">0</span><span class="big-unit">lakh crore</span><p>moved through UPI</p></div>
+        <div><span class="big-num" data-count="11">0</span><span class="big-unit">countries</span><p>where UPI is live</p></div>
+      </div>
+      <p class="source">Source: NPCI FAQ, 15 Sep 2026 (Q13, Q14)</p>
+    </section>
+
+    <section class="w-split wrap">
+      <div class="split-copy">
+        <p class="eyebrow">What the new fee is</p>
+        <h2>A small fee on <span class="blue">bigger</span> shop payments.</h2>
+        <p>From 15 Oct 2026, a fee called MDR (merchant discount rate) applies to UPI payments to shops above ₹2,000: 0.4% of the amount, never more than ₹300.</p>
+      </div>
+      <div class="flow" aria-hidden="true">
+        <div class="flow-node">You<small>pay<br />₹10,000</small></div>
+        <div class="flow-line"><span class="flow-dot"></span></div>
+        <div class="flow-node flow-node--dark">Shop<small>via UPI</small></div>
+        <div class="flow-fee">₹40 fee<br /><small>0.4% of ₹10,000</small></div>
+      </div>
+    </section>
+
+    <section class="w-grid wrap">
+      <div class="grid-copy">
+        <p class="eyebrow">How many payments are affected</p>
+        <h2>More than <span class="blue">95 in 100</span> shop payments stay free.</h2>
+        <p>Only payments <strong>above ₹2,000</strong> carry a fee. Your chai, groceries and auto rides don't. Tap a square.</p>
+        <div class="grid-legend">
+          <span><i class="sw sw-free"></i> ₹2,000 or less: no fee</span>
+          <span><i class="sw sw-fee"></i> Above ₹2,000: a small fee applies</span>
+        </div>
+        <p class="grid-readout" id="grid-readout">&nbsp;</p>
+      </div>
+      <div class="hundred" id="hundred" role="img" aria-label="100 squares, 95 free and at most 5 with a merchant fee"></div>
+      <p class="source">Source: NPCI FAQ Q2 — "more than 95% of the total volume of UPI (P2M) transactions"</p>
+    </section>
+
+    <section class="w-persona wrap">
+      <p class="eyebrow">Pick a payment</p>
+      <h2>What's the fee on it?</h2>
+      <div class="persona-tabs" id="persona-tabs" role="tablist"></div>
+      <div class="persona-card" id="persona-card">
+        <div class="pc-col">
+          <span class="pc-label">Payment</span>
+          <span class="pc-num" id="pc-amount">₹0</span>
+        </div>
+        <div class="pc-col pc-col--blue">
+          <span class="pc-label">UPI fee</span>
+          <span class="pc-num" id="pc-fee">₹0</span>
+        </div>
+        <p class="pc-rule" id="pc-rule"></p>
+      </div>
+    </section>
+
+    <section class="w-curve wrap">
+      <div class="curve-copy">
+        <p class="eyebrow">The fee curve</p>
+        <h2>Zero, then 0.4%, then a ceiling.</h2>
+        <p>Nothing up to ₹2,000. Then 0.4% of the amount, which stops rising at <strong>₹300</strong> once a payment reaches ₹75,000. Fuel, insurance, utilities, telecom and railways pay a flat ₹5. Mutual funds and stocks pay 0.02%.</p>
+      </div>
+      <div class="curve-box">
+        <svg id="curve" viewBox="0 0 640 360" role="img" aria-label="Merchant fee by payment amount"></svg>
+        <label class="slider">
+          <span>Payment amount <strong id="curve-amt">₹25,000</strong></span>
+          <input type="range" id="curve-range" min="0" max="100000" step="500" value="25000" />
+        </label>
+        <div class="curve-out">
+          <span><i class="ln ln-std"></i> Shops & services <strong id="c-std">₹100</strong></span>
+          <span><i class="ln ln-flat"></i> Fuel, bills, insurance <strong id="c-flat">₹5</strong></span>
+          <span><i class="ln ln-cap"></i> Mutual funds, stocks <strong id="c-cap">₹5</strong></span>
+        </div>
+      </div>
+      <p class="source">Source: NPCI FAQ Q3, Q33, Q35, Q37</p>
+    </section>
+
+    <section class="w-compare wrap">
+      <p class="eyebrow">Compared with cards</p>
+      <h2>The fee on a <span class="blue">₹10,000</span> payment</h2>
+      <div class="bars" id="bars"></div>
+      <p class="source">Source: NPCI FAQ Q4 (credit cards 1.5–2.5%, debit cards up to 0.9%, UPI 0.4%)</p>
+    </section>
+
+    <section class="w-tree wrap">
+      <div class="tree-copy">
+        <p class="eyebrow">"Free" was never free</p>
+        <h2>An ₹800 UPI payment costs about <span class="blue">₹2</span> to process.</h2>
+        <p>The RBI broke down who carries that cost. NPCI, which runs UPI, bears only about 8%. Banks and apps carry the rest.</p>
+      </div>
+      <div class="treemap" id="treemap">
+        <div class="tm tm-a" style="--w:40"><strong>₹0.80</strong><span>Your bank</span><em>40%</em></div>
+        <div class="tm-right">
+          <div class="tm tm-b" style="--h:28"><strong>₹0.56</strong><span>Shop's bank &amp; payment app</span><em>28%</em></div>
+          <div class="tm-row">
+            <div class="tm tm-c" style="--w:24"><strong>₹0.48</strong><span>Your UPI app &amp; its bank</span><em>24%</em></div>
+            <div class="tm tm-d" style="--w:8"><strong>₹0.16</strong><span>NPCI</span><em>8%</em></div>
+          </div>
+        </div>
+      </div>
+      <p class="source">Source: RBI Discussion Paper on Charges in Payment Systems, 17 Aug 2022, Box 9 (approximate costs)</p>
+    </section>
+
+    <section class="w-bill wrap">
+      <div class="bill-copy">
+        <p class="eyebrow">Who has been paying</p>
+        <h2>Your taxes covered part of the bill.</h2>
+        <p>Since 2020 the government has paid banks and apps an incentive to keep UPI free. It is a fraction of what the system costs to run each year, which is why the fee is arriving.</p>
+      </div>
+      <div class="columns" id="columns"></div>
+      <p class="source">Sources: Dept. of Financial Services incentive disbursements (FY25 as of Nov 2025); annual running cost from NPCI FAQ Q10</p>
+    </section>
+
+    <section class="w-timeline wrap">
+      <p class="eyebrow">How we got here</p>
+      <h2>A decade in six dates</h2>
+      <ol class="timeline" id="timeline">
+        <li><time>2016</time><p>UPI launches.</p></li>
+        <li><time>1 Jan 2020</time><p>Zero-fee rule begins. Section 10A of the Payment and Settlement Systems Act bars charges on UPI.</p></li>
+        <li><time>17 Aug 2022</time><p>RBI publishes a discussion paper on payment charges, including what UPI really costs to run.</p></li>
+        <li><time>8 Aug 2026</time><p>Finance Ministry explains the law change that lets NPCI's steering committee set a fee on merchant payments.</p></li>
+        <li><time>15 Sep 2026</time><p>NPCI publishes the rules: 0.4% on shop payments above ₹2,000, capped at ₹300.</p></li>
+        <li class="is-now"><time>15 Oct 2026</time><p>The merchant fee takes effect.</p></li>
+      </ol>
+    </section>
+
+    <section class="w-myths wrap">
+      <p class="eyebrow">WhatsApp forward check</p>
+      <h2>Heard this? Tap to check.</h2>
+      <div class="myths" id="myths"></div>
+    </section>
+
+    <section class="w-verdict">
+      <div class="wrap">
+        <p class="eyebrow">The verdict</p>
+        <h2>The short version: <span class="u">not much to worry about.</span></h2>
+        <ul class="verdict-list">
+          <li>Payments of <strong>₹2,000 or less</strong> carry no fee. That's more than 95 in 100.</li>
+          <li>Sending money to people stays <strong>free</strong>, at any amount.</li>
+          <li>Above ₹2,000, the fee is <strong>0.4%, never more than ₹300</strong>. Fuel, bills and insurance: a flat <strong>₹5</strong>.</li>
+        </ul>
+        <a class="btn btn-invert" href="#pay">Check my own statement</a>
+      </div>
+    </section>
+
+    <section class="w-sources wrap">
+      <h3>Sources</h3>
+      <ul>
+        <li><a href="https://www.npci.org.in/" target="_blank" rel="noopener">NPCI — FAQs: Merchant Discount Rate on Select UPI (P2M) Transactions, 15 Sep 2026</a></li>
+        <li><a href="https://www.pib.gov.in/PressReleasePage.aspx?PRID=2296594&amp;reg=48&amp;lang=2" target="_blank" rel="noopener">PIB, Ministry of Finance — "No Charges for UPI Users", 8 Aug 2026</a></li>
+        <li><a href="https://www.rbi.org.in/Scripts/PublicationsView.aspx?id=21082" target="_blank" rel="noopener">RBI — Discussion Paper on Charges in Payment Systems, 17 Aug 2022</a></li>
+        <li><a href="https://www.pib.gov.in/PressReleasePage.aspx?PRID=2112771&amp;reg=48&amp;lang=2" target="_blank" rel="noopener">PIB — Incentive scheme for low-value BHIM-UPI (P2M) transactions</a></li>
+      </ul>
+      <p class="disclaimer">Built for information only. Not financial advice. Check official NPCI, RBI and Ministry of Finance updates for the latest rules.</p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    Made by <a href="https://x.com/NeelakandanNC" target="_blank" rel="noopener">neelakandannc.com</a>
+  </footer>
+
+  <nav class="bottom-nav" aria-label="Sections">
+    <a href="#pay" data-nav="pay" class="is-active">
+      <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><path d="M3 10h18" stroke="currentColor" stroke-width="2"/></svg>
+      How much I have to pay in charges
+    </a>
+    <a href="#worry" data-nav="worry">
+      <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M4 19V9m6 10V5m6 14v-7m4 7H2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      Should I worry?
+    </a>
+  </nav>
+
+  <dialog id="pw-dialog">
+    <form method="dialog">
+      <h3>This PDF is locked</h3>
+      <p id="pw-text">Enter the statement password. It stays on your device.</p>
+      <input id="pw-input" type="password" autocomplete="off" />
+      <div class="dialog-actions">
+        <button value="cancel" class="btn-ghost" type="submit">Skip file</button>
+        <button value="ok" class="btn" type="submit">Unlock</button>
+      </div>
+    </form>
+  </dialog>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
