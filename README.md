@@ -21,7 +21,7 @@ It's a plain static site with no build step.
 2. Framework preset: **Other**. Leave the build command and output directory empty.
 3. Deploy.
 
-`vercel.json` adds security headers and cache rules. After you have a domain, change `og:image` in `index.html` to an absolute URL (e.g. `https://your-domain/og.png`) so link previews show on X and WhatsApp.
+`vercel.json` adds security headers and cache rules. Live at https://upi-fee-check.vercel.app. If the domain changes, update `og:url` and `og:image` in `index.html`.
 
 ## How extraction works (₹0 model cost)
 
